@@ -1,8 +1,5 @@
 # leoduce
  
-Here’s a kid-friendly + developer-friendly README draft you can use directly on GitHub:
-
----
 
 # 🦁 Leoduce
 
