@@ -1,5 +1,5 @@
 # leoduce
- Got it ✅ You want a **README.md** for your Flutter project called **Leoduce**, which is a game for kids.
+ 
 Here’s a kid-friendly + developer-friendly README draft you can use directly on GitHub:
 
 ---
