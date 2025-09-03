@@ -79,9 +79,7 @@ MIT License. Free to use and modify.
 
 ---
 
-👉 Leo, do you want me to also add **screenshots / demo GIF section** in the README so it looks more attractive on GitHub?
-Got it ✅ You want a **README.md** for your Flutter project called **Leoduce**, which is a game for kids.
-Here’s a kid-friendly + developer-friendly README draft you can use directly on GitHub:
+
 
 ---
 
