@@ -159,7 +159,5 @@ lib/
 
 MIT License. Free to use and modify.
 
----
 
-👉 Leo, do you want me to also add **screenshots / demo GIF section** in the README so it looks more attractive on GitHub?
 
