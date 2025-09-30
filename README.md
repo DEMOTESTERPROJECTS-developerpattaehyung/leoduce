@@ -1,5 +1,6 @@
 # leoduce
  <img width="1920" height="1055" alt="image" src="https://github.com/user-attachments/assets/c0b40e80-b9ae-4537-9bac-ea6ff4f88dcf" />
+<img width="1912" height="977" alt="image" src="https://github.com/user-attachments/assets/ef249604-810d-4d21-bcb1-017382bdc39e" />
 
 
 # 🦁 Leoduce
