@@ -1,102 +1,209 @@
+// main.dart
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(DancingApp());
+  runApp(LeoDanceApp());
 }
 
-class DancingApp extends StatelessWidget {
+class LeoDanceApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Leo Dancing App',
+      title: 'LEO Dance App',
       debugShowCheckedModeBanner: false,
-      home: DanceHome(),
-    );
-  }
-}
-
-class DanceHome extends StatefulWidget {
-  @override
-  _DanceHomeState createState() => _DanceHomeState();
-}
-
-class _DanceHomeState extends State<DanceHome>
-    with SingleTickerProviderStateMixin {
-  late AnimationController _controller;
-  late Animation<double> _scaleAnimation;
-  late Animation<double> _rotateAnimation;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _controller = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    )..repeat(reverse: true);
-
-    _scaleAnimation = Tween<double>(begin: 0.8, end: 1.2).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
-
-    _rotateAnimation = Tween<double>(begin: -0.1, end: 0.1).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  Widget dancingImage(String url) {
-    return ScaleTransition(
-      scale: _scaleAnimation,
-      child: RotationTransition(
-        turns: _rotateAnimation,
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Image.network(
-            url,
-            height: 250,
-            width: 200,
-            fit: BoxFit.cover,
-          ),
-        ),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
+      home: LeoHome(),
     );
+  }
+}
+
+class LeoHome extends StatefulWidget {
+  @override
+  State<LeoHome> createState() => _LeoHomeState();
+}
+
+class _LeoHomeState extends State<LeoHome> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    HomePage(),
+    DanceCategories(),
+    ProfilePage(),
+  ];
+
+  void _onTap(int index) {
+    setState(() => _selectedIndex = index);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
       appBar: AppBar(
-        title: Text("Leo Dancing App"),
+        title: Text("LEO Dance App"),
         centerTitle: true,
-        backgroundColor: Colors.deepPurple,
       ),
-      body: Center(
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: _onTap,
+        destinations: [
+          NavigationDestination(icon: Icon(Icons.home_outlined), label: "Home"),
+          NavigationDestination(icon: Icon(Icons.music_note), label: "Dance"),
+          NavigationDestination(icon: Icon(Icons.person), label: "Profile"),
+        ],
+      ),
+    );
+  }
+}
+
+/* ---------------- Home Page ---------------- */
+class HomePage extends StatelessWidget {
+  final List<String> trending = [
+    "Afro Dance",
+    "Hip Hop",
+    "Amapiano",
+    "Breakdance",
+    "Cultural Moves"
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView(
+      padding: EdgeInsets.all(16),
+      children: [
+        Text("🔥 Trending Now",
+            style: Theme.of(context).textTheme.headlineSmall),
+        SizedBox(height: 12),
+        SizedBox(
+          height: 180,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: trending.length,
+            itemBuilder: (context, index) {
+              return Container(
+                width: 140,
+                margin: EdgeInsets.only(right: 12),
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple.shade100,
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.play_circle_fill,
+                        size: 60, color: Colors.deepPurple),
+                    SizedBox(height: 10),
+                    Text(trending[index],
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        SizedBox(height: 20),
+        Text("✨ Featured Performers",
+            style: Theme.of(context).textTheme.headlineSmall),
+        SizedBox(height: 12),
+        ListTile(
+          leading: CircleAvatar(
+            backgroundColor: Colors.deepPurple,
+            child: Icon(Icons.person, color: Colors.white),
+          ),
+          title: Text("Leo The Dancer"),
+          subtitle: Text("Afro + Hip Hop Mix"),
+          trailing: Icon(Icons.star, color: Colors.amber),
+        ),
+        ListTile(
+          leading: CircleAvatar(
+            backgroundColor: Colors.deepPurple,
+            child: Icon(Icons.person, color: Colors.white),
+          ),
+          title: Text("Aisha Groove"),
+          subtitle: Text("Amapiano Specialist"),
+          trailing: Icon(Icons.star, color: Colors.amber),
+        ),
+      ],
+    );
+  }
+}
+
+/* ---------------- Dance Categories ---------------- */
+class DanceCategories extends StatelessWidget {
+  final List<Map<String, dynamic>> categories = [
+    {"name": "Afro Dance", "icon": Icons.public},
+    {"name": "Hip Hop", "icon": Icons.bolt},
+    {"name": "Amapiano", "icon": Icons.music_note},
+    {"name": "Breakdance", "icon": Icons.sports_gymnastics},
+    {"name": "Traditional", "icon": Icons.festival},
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.builder(
+      padding: EdgeInsets.all(16),
+      itemCount: categories.length,
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        mainAxisExtent: 150,
+        crossAxisSpacing: 14,
+        mainAxisSpacing: 14,
+      ),
+      itemBuilder: (context, index) {
+        return Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          elevation: 3,
+          child: InkWell(
+            onTap: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text("Opening ${categories[index]['name']}")),
+              );
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(categories[index]['icon'], size: 50, color: Colors.deepPurple),
+                SizedBox(height: 10),
+                Text(categories[index]['name'],
+                    style: TextStyle(fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/* ---------------- Profile Page ---------------- */
+class ProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: EdgeInsets.all(24),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            dancingImage(
-                "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e"), // Person dancing
+            CircleAvatar(
+              radius: 45,
+              backgroundColor: Colors.deepPurple,
+              child: Icon(Icons.person, size: 50, color: Colors.white),
+            ),
+            SizedBox(height: 12),
+            Text("LEO User",
+                style: Theme.of(context).textTheme.titleLarge),
+            SizedBox(height: 6),
+            Text("Dance Enthusiast"),
             SizedBox(height: 20),
-            dancingImage(
-                "https://images.unsplash.com/photo-1503342217505-b0a15ec3261c"), // Another dancer
-            SizedBox(height: 30),
             ElevatedButton.icon(
               onPressed: () {},
-              icon: Icon(Icons.music_note),
-              label: Text("Start Dancing"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.pinkAccent,
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                textStyle: TextStyle(fontSize: 18),
-              ),
-            )
+              icon: Icon(Icons.settings),
+              label: Text("Settings"),
+            ),
           ],
         ),
       ),
